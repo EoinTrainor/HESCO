@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>HESSCO Marine — Offshore Wind Farm Services</title>
+  <meta name="description" content="HESSCO Marine. Engineering vessels, specialist crew and strategic consultation for the offshore wind sector." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;900&family=Barlow:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:       #0A0E1A;
+      --navy-mid:   #111827;
+      --navy-lt:    #1C2740;
+      --steel:      #2A3855;
+      --ice:        #C8D8E8;
+      --ice-lt:     #E4EDF5;
+      --white:      #F0F4F8;
+      --orange:     #E07020;
+      --orange-lt:  #F08840;
+      --slate:      #8099B8;
+      --slate-lt:   #A0B8CC;
+    }
+
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; background: var(--navy); }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      font-size: 15px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    @media (max-width: 600px) { body { padding: 0; } }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button, input, textarea, select, summary { font: inherit; }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--navy-mid);
+      max-width: 1140px;
+      width: 100%;
+      margin: 0 auto;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 40px);
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 1px solid rgba(200,216,232,0.06);
+    }
+    @media (max-width: 600px) { .card { height: calc(100svh - 24px); border-radius: 8px; } }
+
+    /* ── NAV ── */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+      min-height: 60px;
+      padding: 0 28px;
+      background: var(--navy);
+      border-bottom: 1px solid rgba(200,216,232,0.08);
+      position: relative;
+      z-index: 50;
+      flex-shrink: 0;
+    }
+    .nav-left { display: flex; align-items: center; }
+
+    .nav-toggle {
+      background: none; border: none; cursor: pointer;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px; letter-spacing: 0.18em;
+      text-transform: uppercase; font-weight: 500;
+      color: var(--slate); padding: 8px 0;
+      border-bottom: 1px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+      -webkit-tap-highlight-color: transparent;
+      white-space: nowrap;
+    }
+    .nav-toggle:hover, .nav-toggle.active { color: var(--ice); border-bottom-color: var(--orange); }
+
+    .nav-wordmark {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px; font-weight: 700;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--white);
+      position: absolute; left: 50%; transform: translateX(-50%);
+    }
+    .nav-wordmark .acc { color: var(--orange); }
+
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+    .nav-right a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px; letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(160,184,204,0.5); transition: color 0.2s;
+    }
+    .nav-right a:hover { color: var(--ice); }
+    .nav-linkedin { display: flex; align-items: center; color: rgba(160,184,204,0.5); transition: color 0.2s; cursor: pointer; padding: 4px; }
+    .nav-linkedin:hover { color: var(--ice); }
+
+    /* ── DROPDOWN ── */
+    .dropdown {
+      overflow: hidden; max-height: 0;
+      transition: max-height 0.38s cubic-bezier(0.4,0,0.2,1);
+      background: var(--navy);
+      border-bottom: 1px solid rgba(200,216,232,0.08);
+    }
+    .dropdown.open { max-height: 240px; }
+    .dropdown-inner { display: flex; flex-wrap: wrap; gap: 32px; padding: 28px 32px 32px; }
+    .drop-label {
+      display: block; font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px; letter-spacing: 0.22em;
+      text-transform: uppercase; color: rgba(160,184,204,0.35); margin-bottom: 12px;
+    }
+    .contact-items { display: flex; flex-direction: column; gap: 4px; }
+    .contact-item {
+      display: flex; align-items: center; gap: 9px;
+      font-size: 13px; color: rgba(200,216,232,0.7);
+      line-height: 1.95; transition: color 0.15s; white-space: nowrap;
+    }
+    .contact-item:hover { color: var(--ice); }
+    .contact-item svg { width: 13px; height: 13px; opacity: 0.45; flex-shrink: 0; }
+
+    /* ── HERO ── */
+    .hero { background: var(--navy); color: var(--white); padding: 28px 36px 0; flex-shrink: 0; }
+    .hero-eyebrow {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--orange); margin-bottom: 14px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .hero-eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: var(--orange); }
+    .hero-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(2rem, 5.5vw, 5rem); font-weight: 900;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      line-height: 0.92; color: var(--white); margin-bottom: 18px;
+      white-space: nowrap;
+    }
+    @media (max-width: 720px) { .hero-name { white-space: normal; font-size: clamp(2.8rem, 10vw, 5rem); } }
+    .hero-name em { font-style: normal; color: var(--orange); }
+    .hero-sub {
+      font-size: clamp(0.8rem, 2vw, 1rem); font-weight: 300;
+      color: var(--slate-lt); max-width: 480px; line-height: 1.6;
+    }
+
+    /* ── MEDIA ── */
+    .content-block { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; }
+    .media-strip { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+    .hero-media {
+      flex: 1; min-height: 0; background: var(--navy);
+      display: flex; align-items: stretch; justify-content: center;
+      padding: 16px 20px 0; max-height: 67vh;
+    }
+    .hero-media-inner { width: 100%; height: 100%; border-radius: 6px; overflow: hidden; position: relative; }
+    .video-placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, var(--navy-lt) 0%, var(--steel) 50%, var(--navy-lt) 100%);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .wave-bg { position: absolute; inset: 0; overflow: hidden; opacity: 0.18; }
+    .wave-bg svg { width: 200%; height: 100%; animation: wave-drift 12s linear infinite; }
+    @keyframes wave-drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .turbine-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 80%;
+      z-index: 1; display: flex; align-items: flex-end;
+      justify-content: space-around; padding: 0 5%; pointer-events: none;
+    }
+    .turbine { display: flex; flex-direction: column; align-items: center; }
+    .turbine-mast { width: 3px; background: var(--ice); }
+    .horizon-line {
+      position: absolute; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(200,216,232,0.15), transparent);
+      bottom: 35%; z-index: 1;
+    }
+    .video-placeholder-label {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(200,216,232,0.3); z-index: 2; text-align: center;
+    }
+
+    /* ── INFO STRIP ── */
+    .info-strip { background: var(--navy); padding: 0 20px 16px; flex-shrink: 0; }
+    .info-strip-inner {
+      display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr;
+      padding: 50px 36px; background: var(--navy-lt);
+      border-radius: 6px; border: 1px solid rgba(200,216,232,0.06);
+    }
+    .istrip-div { background: rgba(200,216,232,0.08); }
+    .istrip-col { padding: 0 32px; display: flex; flex-direction: column; align-items: center; }
+    .istrip-col:first-child { padding-left: 0; }
+    .istrip-col:last-child  { padding-right: 0; }
+    .istrip-label {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 2.4em; font-family: 'Barlow Condensed', sans-serif;
+      font-size: 24px; font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--orange); margin-bottom: 0; text-align: center;
+      transition: color 0.2s;
+    }
+    .istrip-col { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .istrip-col:hover .istrip-label { color: var(--orange-lt); }
+    .istrip-text { display: none; }
+    .istrip-link { display: none; }
+
+    /* ── SECTION PAGES ── */
+    .menu-page { padding-top: 20px; }
+    .menu-card {
+      height: auto; overflow: hidden; flex-shrink: 0;
+      display: flex; flex-direction: column;
+      border-radius: 8px; border: 1px solid rgba(200,216,232,0.06);
+    }
+    .menu-scroll {
+      overflow: visible; background: var(--navy);
+      padding: 16px 20px 20px; display: flex; flex-direction: column;
+    }
+    .menu-inner {
+      background: var(--navy-mid); border-radius: 6px;
+      padding: 48px 56px; width: 100%; box-sizing: border-box;
+      flex-shrink: 0; border: 1px solid rgba(200,216,232,0.06);
+    }
+    .menu-footer { background: var(--navy); flex-shrink: 0; height: 0; }
+
+    .nav-sm-only { display: none; }
+
+    @media (max-width: 600px) {
+      .menu-page { padding-top: 0; }
+      .menu-card { height: auto; min-height: 100svh; border-radius: 0 !important; }
+      .menu-inner { padding: 32px 20px 48px; }
+      .info-strip { margin-top: -24px; position: relative; z-index: 1; }
+      .info-strip-inner { grid-template-columns: 1fr 1px 1fr 1px 1fr; padding: 24px 8px; }
+      .istrip-div { display: block; }
+      .istrip-col { padding: 0 6px; align-items: center; }
+      .istrip-label { font-size: 14px; letter-spacing: 0.12em; min-height: 2.4em; }
+      .hero { padding: 22px 20px 0; }
+      .nav { padding: 0 16px; }
+      .nav-wordmark { font-size: 14px; }
+      .nav-right a:not(.nav-sm-only), .nav-linkedin { display: none; }
+      .nav-sm-only { display: block; }
+    }
+
+    /* ── SECTION TITLES ── */
+    .sec-eyebrow {
+      font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--orange); margin-bottom: 12px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .sec-eyebrow::before { content: ''; display: block; width: 20px; height: 1px; background: var(--orange); }
+    .sec-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700;
+      letter-spacing: 0.02em; text-transform: uppercase;
+      color: var(--white); margin-bottom: 18px; line-height: 1;
+    }
+    .sec-copy { font-size: 14px; color: var(--slate-lt); line-height: 1.9; max-width: 640px; font-weight: 300; }
+
+    /* ── SERVICE LAYOUT ── */
+    .service-layout {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 56px; margin-top: 36px; align-items: start;
+    }
+    @media (max-width: 720px) { .service-layout { grid-template-columns: 1fr; gap: 32px; } }
+
+    .service-icon-large { width: 52px; height: 52px; color: var(--orange); opacity: 0.8; margin-bottom: 24px; }
+    .service-body { font-size: 14px; color: var(--slate-lt); line-height: 1.9; font-weight: 300; }
+    .service-body p { margin-bottom: 16px; }
+    .service-body p:last-child { margin-bottom: 0; }
+
+    .aside-block {
+      background: var(--navy-lt); border: 1px solid rgba(200,216,232,0.07);
+      border-radius: 6px; padding: 28px; margin-bottom: 14px;
+      position: relative; overflow: hidden;
+    }
+    .aside-block::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 2px; height: 100%; background: var(--orange);
+    }
+    .aside-title {
+      font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--orange); margin-bottom: 14px;
+    }
+    .aside-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .aside-list li {
+      font-size: 13px; color: var(--slate-lt);
+      display: flex; align-items: flex-start; gap: 10px; line-height: 1.6;
+    }
+    .aside-list li::before { content: '—'; color: var(--orange); flex-shrink: 0; font-size: 11px; margin-top: 2px; }
+
+    .service-number-bg {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(6rem, 18vw, 14rem); font-weight: 900;
+      color: rgba(200,216,232,0.035); line-height: 1;
+      position: absolute; right: 20px; top: 10px;
+      letter-spacing: -0.02em; pointer-events: none; user-select: none;
+    }
+
+    .cta-row { margin-top: 32px; display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-cta {
+      background: var(--orange); color: var(--white); border: none;
+      padding: 13px 28px; font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+      font-weight: 500; border-radius: 4px; cursor: pointer; transition: background 0.2s;
+    }
+    .btn-cta:hover { background: var(--orange-lt); }
+    .btn-ghost {
+      background: transparent; color: var(--slate-lt);
+      border: 1px solid rgba(200,216,232,0.15); padding: 13px 28px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+      letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500;
+      border-radius: 4px; cursor: pointer; transition: color 0.2s, border-color 0.2s;
+    }
+    .btn-ghost:hover { color: var(--ice); border-color: rgba(200,216,232,0.4); }
+
+    /* ── ABOUT ── */
+    .about-pull {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.04em;
+      color: var(--ice-lt); line-height: 1.2;
+      margin-bottom: 28px; padding-bottom: 28px;
+      border-bottom: 1px solid rgba(200,216,232,0.1);
+    }
+    .about-text p { font-size: 14px; color: var(--slate-lt); line-height: 1.9; margin-bottom: 16px; font-weight: 300; }
+    .about-text p:last-child { margin-bottom: 0; }
+    .about-values { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; margin-top: 36px; }
+    @media (max-width: 600px) { .about-values { grid-template-columns: 1fr; } }
+    .value-item {
+      background: var(--navy-lt); border: 1px solid rgba(200,216,232,0.07);
+      border-radius: 6px; padding: 20px 22px;
+      display: flex; align-items: flex-start; gap: 14px;
+    }
+    .value-dot { width: 6px; height: 6px; background: var(--orange); border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+    .value-label { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--white); margin-bottom: 4px; }
+    .value-desc { font-size: 12px; color: var(--slate); line-height: 1.7; }
+
+    /* ── CONTACT ── */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 36px; }
+    @media (max-width: 720px) { .contact-grid { grid-template-columns: 1fr; gap: 32px; } }
+    .contact-form { display: grid; gap: 12px; }
+    .contact-form input, .contact-form textarea, .contact-form select {
+      width: 100%; background: var(--navy-lt); border: 1px solid rgba(200,216,232,0.1);
+      color: var(--white); padding: 14px 16px; font-size: 13.5px; outline: none;
+      border-radius: 4px; transition: border-color 0.2s; font-family: 'Barlow', sans-serif; box-sizing: border-box;
+    }
+    .contact-form input:focus, .contact-form textarea:focus, .contact-form select:focus { border-color: var(--orange); }
+    .contact-form input::placeholder, .contact-form textarea::placeholder { color: var(--slate); }
+    .contact-form select { color: var(--slate); appearance: none; }
+    .contact-form select option { background: var(--navy-mid); color: var(--white); }
+    .contact-form textarea { resize: vertical; min-height: 120px; }
+    .btn-submit {
+      background: var(--orange); color: var(--white); border: none;
+      padding: 14px 32px; font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+      font-weight: 500; border-radius: 4px; cursor: pointer; transition: background 0.2s; justify-self: start;
+    }
+    .btn-submit:hover { background: var(--orange-lt); }
+    .contact-info-list { display: flex; flex-direction: column; gap: 24px; }
+    .ci-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--orange); margin-bottom: 8px; }
+    .ci-value { font-size: 14px; color: var(--slate-lt); line-height: 1.7; }
+    .ci-value a { transition: color 0.15s; }
+    .ci-value a:hover { color: var(--white); }
+    .contact-thanks { display: none; font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--orange); margin-top: 12px; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════ PAGE 1: HERO ═══════ -->
+<div class="card" id="home">
+  <nav class="nav">
+    <div class="nav-left"><button type="button" class="nav-toggle" id="btn-toggle-1">Contact&nbsp;|&nbsp;Enquire</button></div>
+    <div class="nav-wordmark">HESS<span class="acc">CO</span></div>
+    <div class="nav-right">
+      <a class="nav-sm-only" href="#vessels" onclick="go('vessels');return false;">Services</a>
+      <a href="#vessels" onclick="go('vessels');return false;">Services</a>
+      <a href="https://linkedin.com" target="_blank" rel="noopener" class="nav-linkedin" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zm2-6a2 2 0 110 4 2 2 0 010-4z"/></svg></a>
+    </div>
+  </nav>
+  <div class="dropdown" id="main-panel-1">
+    <div class="dropdown-inner">
+      <div>
+        <span class="drop-label">Contact</span>
+        <div class="contact-items">
+          <a class="contact-item" href="tel:+442800000000"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2C7.163 21 3 16.837 3 6a2 2 0 012-2z"/></svg>+44 (0) 28 0000 0000</a>
+          <a class="contact-item" href="mailto:enquiries@hescomarine.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>enquiries@hescomarine.com</a>
+        </div>
+      </div>
+      <div>
+        <span class="drop-label">Navigate</span>
+        <div class="contact-items">
+          <a class="contact-item" href="#vessels" onclick="go('vessels');return false;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>Engineering Vessels</a>
+          <a class="contact-item" href="#crew" onclick="go('crew');return false;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>Specialist Crew</a>
+          <a class="contact-item" href="#consultation" onclick="go('consultation');return false;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>Consultation</a>
+          <a class="contact-item" href="#about" onclick="go('about');return false;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>About Us</a>
+          <a class="contact-item" href="#contact" onclick="go('contact');return false;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>Get In Touch</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <div class="hero">
+      <p class="hero-eyebrow">Offshore Wind Sector Services</p>
+      <h1 class="hero-name">Marine <em>Operations</em> Specialists</h1>
+      <p class="hero-sub">Engineering vessels, specialist crew, and strategic consultation — delivered to the offshore wind industry with precision and reliability.</p>
+    </div>
+    <div class="media-strip">
+      <div class="hero-media">
+        <div class="hero-media-inner">
+          <div class="video-placeholder">
+            <div class="wave-bg">
+              <svg viewBox="0 0 1200 300" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,100 C150,60 300,140 450,100 C600,60 750,140 900,100 C1050,60 1150,140 1200,100 L1200,300 L0,300Z" fill="#C8D8E8" opacity="0.4"/>
+                <path d="M0,140 C120,100 260,180 400,140 C540,100 680,180 820,140 C960,100 1100,180 1200,140 L1200,300 L0,300Z" fill="#C8D8E8" opacity="0.2"/>
+                <path d="M1200,100 C1350,60 1500,140 1650,100 C1800,60 1950,140 2100,100 L2400,300 L1200,300Z" fill="#C8D8E8" opacity="0.4"/>
+                <path d="M1200,140 C1320,100 1460,180 1600,140 C1740,100 1880,180 2020,140 L2400,300 L1200,300Z" fill="#C8D8E8" opacity="0.2"/>
+              </svg>
+            </div>
+            <div class="turbine-overlay">
+              <div class="turbine" style="opacity:0.15"><div style="margin-bottom:-2px"><svg viewBox="0 0 60 60" width="60" height="60" fill="none"><circle cx="30" cy="30" r="4" fill="#C8D8E8"/><line x1="30" y1="30" x2="30" y2="4" stroke="#C8D8E8" stroke-width="2.5" stroke-linecap="round"/><line x1="30" y1="30" x2="8" y2="44" stroke="#C8D8E8" stroke-width="2.5" stroke-linecap="round"/><line x1="30" y1="30" x2="52" y2="44" stroke="#C8D8E8" stroke-width="2.5" stroke-linecap="round"/></svg></div><div class="turbine-mast" style="height:90px"></div></div>
+              <div class="turbine" style="opacity:0.1"><div style="margin-bottom:-2px"><svg viewBox="0 0 60 60" width="80" height="80" fill="none"><circle cx="30" cy="30" r="4" fill="#C8D8E8"/><line x1="30" y1="30" x2="30" y2="2" stroke="#C8D8E8" stroke-width="2" stroke-linecap="round"/><line x1="30" y1="30" x2="5" y2="46" stroke="#C8D8E8" stroke-width="2" stroke-linecap="round"/><line x1="30" y1="30" x2="55" y2="46" stroke="#C8D8E8" stroke-width="2" stroke-linecap="round"/></svg></div><div class="turbine-mast" style="height:120px"></div></div>
+              <div class="turbine" style="opacity:0.08"><div style="margin-bottom:-2px"><svg viewBox="0 0 60 60" width="50" height="50" fill="none"><circle cx="30" cy="30" r="4" fill="#C8D8E8"/><line x1="30" y1="30" x2="30" y2="4" stroke="#C8D8E8" stroke-width="2.5" stroke-linecap="round"/><line x1="30" y1="30" x2="8" y2="44" stroke="#C8D8E8" stroke-width="2.5" stroke-linecap="round"/><line x1="30" y1="30" x2="52" y2="44" stroke="#C8D8E8" stroke-width="2.5" stroke-linecap="round"/></svg></div><div class="turbine-mast" style="height:70px"></div></div>
+              <div class="turbine" style="opacity:0.12"><div style="margin-bottom:-2px"><svg viewBox="0 0 60 60" width="70" height="70" fill="none"><circle cx="30" cy="30" r="4" fill="#C8D8E8"/><line x1="30" y1="30" x2="30" y2="2" stroke="#C8D8E8" stroke-width="2.5" stroke-linecap="round"/><line x1="30" y1="30" x2="6" y2="44" stroke="#C8D8E8" stroke-width="2.5" stroke-linecap="round"/><line x1="30" y1="30" x2="54" y2="44" stroke="#C8D8E8" stroke-width="2.5" stroke-linecap="round"/></svg></div><div class="turbine-mast" style="height:100px"></div></div>
+            </div>
+            <div class="horizon-line"></div>
+            <div class="video-placeholder-label">— video background placeholder —<br>offshore vessels &amp; wind farm footage</div>
+          </div>
+        </div>
+      </div>
+      <div class="info-strip">
+        <div class="info-strip-inner">
+          <div class="istrip-col" onclick="go('vessels')" role="button" tabindex="0">
+            <span class="istrip-label">Engineering Vessels</span>
+            <span class="istrip-text">Purpose-built marine assets for offshore wind farm operations.</span>
+            <a class="istrip-link" href="#vessels" onclick="go('vessels');return false;">Learn more →</a>
+          </div>
+          <div class="istrip-div"></div>
+          <div class="istrip-col" onclick="go('crew')" role="button" tabindex="0">
+            <span class="istrip-label">Specialist<br>Crew</span>
+            <span class="istrip-text">Qualified personnel experienced in offshore wind operations.</span>
+            <a class="istrip-link" href="#crew" onclick="go('crew');return false;">Learn more →</a>
+          </div>
+          <div class="istrip-div"></div>
+          <div class="istrip-col" onclick="go('consultation')" role="button" tabindex="0">
+            <span class="istrip-label">Consultation</span>
+            <span class="istrip-text">Strategic marine and operational consultancy from experts.</span>
+            <a class="istrip-link" href="#consultation" onclick="go('consultation');return false;">Learn more →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ PAGE 2: ENGINEERING VESSELS ═══════ -->
+<div class="menu-page" id="vessels">
+  <div class="card menu-card">
+    <nav class="nav">
+      <div class="nav-left"><button type="button" class="nav-toggle" id="btn-toggle-2">Contact&nbsp;|&nbsp;Enquire</button></div>
+      <a href="#home" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" class="nav-wordmark">HESS<span class="acc">CO</span></a>
+      <div class="nav-right">
+        <a class="nav-sm-only" href="#vessels" onclick="go('vessels');return false;">Services</a>
+        <a href="#crew" onclick="go('crew');return false;">Crew</a>
+        <a href="#consultation" onclick="go('consultation');return false;">Consultation</a>
+        <a href="#contact" onclick="go('contact');return false;">Contact</a>
+      </div>
+    </nav>
+    <div class="dropdown" id="main-panel-2">
+      <div class="dropdown-inner">
+        <div><span class="drop-label">Contact</span><div class="contact-items"><a class="contact-item" href="tel:+442800000000"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2C7.163 21 3 16.837 3 6a2 2 0 012-2z"/></svg>+44 (0) 28 0000 0000</a><a class="contact-item" href="mailto:enquiries@hescomarine.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>enquiries@hescomarine.com</a></div></div>
+      </div>
+    </div>
+    <div class="menu-scroll">
+      <div class="menu-inner" style="position:relative;overflow:hidden;">
+        <div class="service-number-bg">01</div>
+        <p class="sec-eyebrow">Service 01 of 03</p>
+        <h2 class="sec-title">Engineering Vessels</h2>
+        <p class="sec-copy">Purpose-built and suitably equipped marine vessels available for hire and operational deployment across offshore wind farm projects.</p>
+        <div class="service-layout">
+          <div>
+            <svg class="service-icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20M6 20V10l6-7 6 7v10"/><path d="M10 20v-5h4v5"/></svg>
+            <div class="service-body">
+              <p>We provide access to purpose-built marine vessels suited to the demands of offshore wind farm operations. Our vessels are maintained to the highest standards and available for hire on both short and long-term engagements.</p>
+              <p>Capable of operating across a range of sea states and environmental conditions, our assets are crewed, equipped, and ready to mobilise. We take responsibility for vessel readiness, compliance, and operational performance so that our clients can focus on delivery.</p>
+              <p>Whether supporting installation, maintenance, inspection, or logistics, we offer dependable marine capability without complexity.</p>
+            </div>
+            <div class="cta-row">
+              <button class="btn-cta" onclick="go('contact')">Make an Enquiry</button>
+              <button class="btn-ghost" onclick="go('crew')">Next: Specialist Crew →</button>
+            </div>
+          </div>
+          <div>
+            <div class="aside-block">
+              <div class="aside-title">Vessel Capabilities</div>
+              <ul class="aside-list">
+                <li>Offshore wind farm support operations</li>
+                <li>Installation and maintenance logistics</li>
+                <li>Survey and inspection support</li>
+                <li>Crew transfer and personnel movements</li>
+                <li>Equipment and materials transport</li>
+                <li>Standby and emergency response</li>
+              </ul>
+            </div>
+            <div class="aside-block">
+              <div class="aside-title">Compliance &amp; Standards</div>
+              <ul class="aside-list">
+                <li>MCA compliant vessels</li>
+                <li>Full safety management systems</li>
+                <li>Regular survey and certification</li>
+                <li>Operational risk assessments provided</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-footer"></div>
+  </div>
+</div>
+
+<!-- ═══════ PAGE 3: SPECIALIST CREW ═══════ -->
+<div class="menu-page" id="crew">
+  <div class="card menu-card">
+    <nav class="nav">
+      <div class="nav-left"><button type="button" class="nav-toggle" id="btn-toggle-3">Contact&nbsp;|&nbsp;Enquire</button></div>
+      <a href="#home" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" class="nav-wordmark">HESS<span class="acc">CO</span></a>
+      <div class="nav-right">
+        <a class="nav-sm-only" href="#vessels" onclick="go('vessels');return false;">Services</a>
+        <a href="#vessels" onclick="go('vessels');return false;">Vessels</a>
+        <a href="#consultation" onclick="go('consultation');return false;">Consultation</a>
+        <a href="#contact" onclick="go('contact');return false;">Contact</a>
+      </div>
+    </nav>
+    <div class="dropdown" id="main-panel-3">
+      <div class="dropdown-inner">
+        <div><span class="drop-label">Contact</span><div class="contact-items"><a class="contact-item" href="tel:+442800000000"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2C7.163 21 3 16.837 3 6a2 2 0 012-2z"/></svg>+44 (0) 28 0000 0000</a><a class="contact-item" href="mailto:enquiries@hescomarine.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>enquiries@hescomarine.com</a></div></div>
+      </div>
+    </div>
+    <div class="menu-scroll">
+      <div class="menu-inner" style="position:relative;overflow:hidden;">
+        <div class="service-number-bg">02</div>
+        <p class="sec-eyebrow">Service 02 of 03</p>
+        <h2 class="sec-title">Specialist Crew</h2>
+        <p class="sec-copy">Highly trained and certified offshore personnel available for short and long-term mobilisation within the offshore wind sector.</p>
+        <div class="service-layout">
+          <div>
+            <svg class="service-icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+            <div class="service-body">
+              <p>Our crew bring demonstrable experience in offshore wind sector operations. We provide personnel who are trained, certified, and ready to integrate into your team from day one — reducing ramp-up time and operational risk.</p>
+              <p>We manage compliance, certification tracking, and ongoing training requirements so you don't have to. Each crew member is selected not only for technical competence but for the professionalism and reliability that offshore operations demand.</p>
+              <p>Available for both vessel-based and shore-support roles, our crew can be mobilised at short notice to meet the pace of your project.</p>
+            </div>
+            <div class="cta-row">
+              <button class="btn-cta" onclick="go('contact')">Make an Enquiry</button>
+              <button class="btn-ghost" onclick="go('consultation')">Next: Consultation →</button>
+            </div>
+          </div>
+          <div>
+            <div class="aside-block">
+              <div class="aside-title">Personnel Roles</div>
+              <ul class="aside-list">
+                <li>Masters and deck officers</li>
+                <li>Marine engineers</li>
+                <li>Able seamen and deckhands</li>
+                <li>Dynamic positioning operators</li>
+                <li>Offshore safety officers</li>
+                <li>Logistics and operations support</li>
+              </ul>
+            </div>
+            <div class="aside-block">
+              <div class="aside-title">Certifications &amp; Standards</div>
+              <ul class="aside-list">
+                <li>STCW compliant across all crew</li>
+                <li>OPITO offshore safety certified</li>
+                <li>GWO Basic Safety Training</li>
+                <li>HUET and sea survival qualified</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-footer"></div>
+  </div>
+</div>
+
+<!-- ═══════ PAGE 4: CONSULTATION ═══════ -->
+<div class="menu-page" id="consultation">
+  <div class="card menu-card">
+    <nav class="nav">
+      <div class="nav-left"><button type="button" class="nav-toggle" id="btn-toggle-4">Contact&nbsp;|&nbsp;Enquire</button></div>
+      <a href="#home" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" class="nav-wordmark">HESS<span class="acc">CO</span></a>
+      <div class="nav-right">
+        <a class="nav-sm-only" href="#vessels" onclick="go('vessels');return false;">Services</a>
+        <a href="#vessels" onclick="go('vessels');return false;">Vessels</a>
+        <a href="#crew" onclick="go('crew');return false;">Crew</a>
+        <a href="#contact" onclick="go('contact');return false;">Contact</a>
+      </div>
+    </nav>
+    <div class="dropdown" id="main-panel-4">
+      <div class="dropdown-inner">
+        <div><span class="drop-label">Contact</span><div class="contact-items"><a class="contact-item" href="tel:+442800000000"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2C7.163 21 3 16.837 3 6a2 2 0 012-2z"/></svg>+44 (0) 28 0000 0000</a><a class="contact-item" href="mailto:enquiries@hescomarine.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>enquiries@hescomarine.com</a></div></div>
+      </div>
+    </div>
+    <div class="menu-scroll">
+      <div class="menu-inner" style="position:relative;overflow:hidden;">
+        <div class="service-number-bg">03</div>
+        <p class="sec-eyebrow">Service 03 of 03</p>
+        <h2 class="sec-title">Consultation</h2>
+        <p class="sec-copy">Strategic marine and operational consultancy drawing on extensive offshore wind industry knowledge — from project concept through to delivery.</p>
+        <div class="service-layout">
+          <div>
+            <svg class="service-icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            <div class="service-body">
+              <p>We offer strategic consultancy to clients operating in, or entering, the offshore wind sector. Our advisors bring direct, hands-on experience of marine operations, project delivery, and regulatory compliance across the full project lifecycle.</p>
+              <p>Whether you need an independent review of your marine operations strategy, support with procurement and contractor management, or expert input on a specific challenge — we provide clear, grounded advice without unnecessary complexity.</p>
+              <p>We work alongside your team rather than over them, and we only take on engagements where we are confident we can add genuine value.</p>
+            </div>
+            <div class="cta-row">
+              <button class="btn-cta" onclick="go('contact')">Make an Enquiry</button>
+              <button class="btn-ghost" onclick="go('about')">About Us →</button>
+            </div>
+          </div>
+          <div>
+            <div class="aside-block">
+              <div class="aside-title">Consultation Areas</div>
+              <ul class="aside-list">
+                <li>Marine operations strategy</li>
+                <li>Project planning and risk assessment</li>
+                <li>Regulatory compliance and permitting</li>
+                <li>Contractor and procurement support</li>
+                <li>HSEQ systems and implementation</li>
+                <li>Operational design and review</li>
+              </ul>
+            </div>
+            <div class="aside-block">
+              <div class="aside-title">Our Approach</div>
+              <ul class="aside-list">
+                <li>Practical, experience-led advice</li>
+                <li>Honest assessment of risk and opportunity</li>
+                <li>Clear deliverables and timelines</li>
+                <li>Flexible engagement models</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-footer"></div>
+  </div>
+</div>
+
+<!-- ═══════ PAGE 5: ABOUT ═══════ -->
+<div class="menu-page" id="about">
+  <div class="card menu-card">
+    <nav class="nav">
+      <div class="nav-left"><button type="button" class="nav-toggle" id="btn-toggle-5">Contact&nbsp;|&nbsp;Enquire</button></div>
+      <a href="#home" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" class="nav-wordmark">HESS<span class="acc">CO</span></a>
+      <div class="nav-right">
+        <a class="nav-sm-only" href="#vessels" onclick="go('vessels');return false;">Services</a>
+        <a href="#vessels" onclick="go('vessels');return false;">Services</a>
+        <a href="#contact" onclick="go('contact');return false;">Contact</a>
+      </div>
+    </nav>
+    <div class="dropdown" id="main-panel-5">
+      <div class="dropdown-inner">
+        <div><span class="drop-label">Contact</span><div class="contact-items"><a class="contact-item" href="tel:+442800000000"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2C7.163 21 3 16.837 3 6a2 2 0 012-2z"/></svg>+44 (0) 28 0000 0000</a><a class="contact-item" href="mailto:enquiries@hescomarine.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>enquiries@hescomarine.com</a></div></div>
+      </div>
+    </div>
+    <div class="menu-scroll">
+      <div class="menu-inner">
+        <p class="sec-eyebrow">Who we are</p>
+        <h2 class="sec-title">About HESSCO Marine</h2>
+        <p class="about-pull">"Reliable capability. Delivered offshore."</p>
+        <div class="about-text">
+          <p>HESSCO Marine is a specialist offshore services provider operating within the offshore wind energy sector. We bring together engineering vessels, trained crew and experienced consultation under one reliable point of contact.</p>
+          <p>Established to address a clear gap in the market for a responsive, capable, and straightforward marine services partner, we work with developers, contractors and operators who require dependable offshore support without complexity.</p>
+          <p>Our approach is deliberately focused. We keep our offering centred on three things — vessels, crew and consultation — and we do each of them well. We are not everything to everyone. We are the right partner for the right projects.</p>
+          <p>Operating across UK and international waters, our team brings collective decades of offshore experience to every engagement. We understand the demands of wind farm operations and we are built to meet them.</p>
+        </div>
+        <div class="about-values">
+          <div class="value-item"><div class="value-dot"></div><div><div class="value-label">Reliable</div><div class="value-desc">We show up, we deliver, and we do not make promises we cannot keep.</div></div></div>
+          <div class="value-item"><div class="value-dot"></div><div><div class="value-label">Safe</div><div class="value-desc">Safety is embedded in how we operate at every level, on every project.</div></div></div>
+          <div class="value-item"><div class="value-dot"></div><div><div class="value-label">Experienced</div><div class="value-desc">Decades of combined offshore industry knowledge across our team and assets.</div></div></div>
+          <div class="value-item"><div class="value-dot"></div><div><div class="value-label">Straightforward</div><div class="value-desc">Clear communication. Honest assessments. No unnecessary complexity.</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-footer"></div>
+  </div>
+</div>
+
+<!-- ═══════ PAGE 6: CONTACT ═══════ -->
+<div class="menu-page" id="contact">
+  <div class="card menu-card">
+    <nav class="nav">
+      <div class="nav-left"><button type="button" class="nav-toggle" id="btn-toggle-6">Contact&nbsp;|&nbsp;Enquire</button></div>
+      <a href="#home" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" class="nav-wordmark">HESS<span class="acc">CO</span></a>
+      <div class="nav-right">
+        <a class="nav-sm-only" href="#vessels" onclick="go('vessels');return false;">Services</a>
+        <a href="#vessels" onclick="go('vessels');return false;">Services</a>
+        <a href="#about" onclick="go('about');return false;">About</a>
+      </div>
+    </nav>
+    <div class="dropdown" id="main-panel-6">
+      <div class="dropdown-inner">
+        <div><span class="drop-label">Direct Contact</span><div class="contact-items"><a class="contact-item" href="tel:+442800000000"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2C7.163 21 3 16.837 3 6a2 2 0 012-2z"/></svg>+44 (0) 28 0000 0000</a><a class="contact-item" href="mailto:enquiries@hescomarine.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>enquiries@hescomarine.com</a></div></div>
+      </div>
+    </div>
+    <div class="menu-scroll">
+      <div class="menu-inner">
+        <p class="sec-eyebrow">Get in touch</p>
+        <h2 class="sec-title">Make An Enquiry</h2>
+        <p class="sec-copy">Whether you need vessels, crew, consultation, or simply want to discuss a project — we are ready to talk.</p>
+        <div class="contact-grid">
+          <div>
+            <div class="contact-form" id="contact-form">
+              <input type="text" id="cf-name" placeholder="Your name" autocomplete="name" />
+              <input type="text" id="cf-company" placeholder="Company / Organisation" autocomplete="organization" />
+              <input type="email" id="cf-email" placeholder="Email address" autocomplete="email" />
+              <select id="cf-service"><option value="" disabled selected>Area of interest…</option><option value="vessels">Engineering Vessels</option><option value="crew">Specialist Crew</option><option value="consultation">Consultation</option><option value="general">General Enquiry</option></select>
+              <textarea id="cf-message" placeholder="Tell us about your project or requirements"></textarea>
+              <button class="btn-submit" id="cf-submit">Send Enquiry</button>
+            </div>
+            <div class="contact-thanks" id="contact-thanks">Enquiry received — we will be in touch shortly.</div>
+          </div>
+          <div class="contact-info-list">
+            <div><div class="ci-label">Telephone</div><div class="ci-value"><a href="tel:+442800000000">+44 (0) 28 0000 0000</a></div></div>
+            <div><div class="ci-label">Email</div><div class="ci-value"><a href="mailto:enquiries@hescomarine.com">enquiries@hescomarine.com</a></div></div>
+            <div><div class="ci-label">Registered Address</div><div class="ci-value">HESSCO Marine Ltd<br>Northern Ireland<br>United Kingdom</div></div>
+            <div><div class="ci-label">Sector</div><div class="ci-value">Offshore Wind Energy<br>UK &amp; International Waters</div></div>
+            <div><div class="ci-label">Connect</div><div class="ci-value"><a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn — HESSCO Marine</a></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-footer"></div>
+  </div>
+</div>
+
+<script>
+  function go(id) {
+    var el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    document.querySelectorAll('.dropdown').forEach(function(d){ d.classList.remove('open'); });
+    document.querySelectorAll('.nav-toggle').forEach(function(b){ b.classList.remove('active'); });
+  }
+
+  ['1','2','3','4','5','6'].forEach(function(n) {
+    (function () {
+      var panel  = document.getElementById('main-panel-' + n);
+      var toggle = document.getElementById('btn-toggle-' + n);
+      if (!panel || !toggle) return;
+      var isOpen = false;
+      function open()  { panel.classList.add('open');    toggle.classList.add('active');    isOpen = true; }
+      function close() { panel.classList.remove('open'); toggle.classList.remove('active'); isOpen = false; }
+      toggle.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); isOpen ? close() : open(); });
+      document.addEventListener('click', function(e) { if (isOpen && e.target !== toggle && !panel.contains(e.target)) close(); });
+    })();
+  });
+
+  (function () {
+    var btn    = document.getElementById('cf-submit');
+    var thanks = document.getElementById('contact-thanks');
+    var form   = document.getElementById('contact-form');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      if (!document.getElementById('cf-name').value.trim() || !document.getElementById('cf-email').value.trim()) return;
+      form.style.display = 'none';
+      thanks.style.display = 'block';
+    });
+  })();
+</script>
+
+</body>
+</html>
